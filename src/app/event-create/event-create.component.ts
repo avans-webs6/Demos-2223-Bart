@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-event-create',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./event-create.component.css']
 })
 export class EventCreateComponent implements OnInit {
+
+  @Output() public saved = new EventEmitter();
 
   event: any = {};
 
@@ -19,5 +21,7 @@ export class EventCreateComponent implements OnInit {
     events.push(this.event);
     localStorage.setItem('events', JSON.stringify(events));
     this.event = {};
+
+    this.saved.emit();
   }
 }
