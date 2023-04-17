@@ -7,7 +7,8 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class EventCreateComponent implements OnInit {
 
-  @Output() public saved = new EventEmitter();
+  @Output()
+  saved = new EventEmitter();
 
   event: any = {};
 
