@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventCreateComponent implements OnInit {
 
+  event: any = {};
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  saveEvent(){
+    let events = JSON.parse(localStorage.getItem('events') ?? '[]');
+    events.push(this.event);
+    localStorage.setItem('events', JSON.stringify(events));
+    this.event = {};
+  }
 }

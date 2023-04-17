@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Demos-2223-Bart';
+  title = 'Festivals';
+
+  showCreate = false;
+
+  onCreate() {
+    this.showCreate = !this.showCreate;
+  }
 }
