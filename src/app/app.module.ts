@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { EventListComponent } from './event-list/event-list.component';
 import { EventCreateComponent } from './event-create/event-create.component';
 import { EventDetailsComponent } from './event-details/event-details.component';
+import { EventService } from './event.service';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -16,9 +18,10 @@ import { EventDetailsComponent } from './event-details/event-details.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule
   ],
-  providers: [],
+  providers: [EventService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

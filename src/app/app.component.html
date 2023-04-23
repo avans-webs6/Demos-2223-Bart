@@ -1,6 +1,8 @@
 <div>
   <h1>{{title}}</h1>
-  <app-event-list [events]="events"></app-event-list>
+  <router-outlet></router-outlet>
+  <button (click)="onClear()">Clear events</button>
+  <p></p>
   <button (click)="onCreate()">Create event</button>
   <div *ngIf="showCreate">
     <app-event-create (saved)="onSaved()"></app-event-create>

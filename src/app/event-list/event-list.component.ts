@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { EventService } from '../event.service';
 
 @Component({
   selector: 'app-event-list',
@@ -10,8 +11,10 @@ export class EventListComponent implements OnInit {
   @Input()
   events: any[] = [];
 
-  constructor() {
-
+  constructor(public eventService: EventService) {
+    eventService.getEvents().subscribe((events: any[]) => {
+      this.events = events;
+    })
   }
 
   ngOnInit(): void {

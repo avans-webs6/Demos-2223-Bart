@@ -1,4 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { EventService } from '../event.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-event-create',
@@ -12,15 +14,14 @@ export class EventCreateComponent implements OnInit {
 
   event: any = {};
 
-  constructor() { }
+  constructor(public eventService: EventService) { }
 
   ngOnInit(): void {
   }
 
-  saveEvent(){
-    let events = JSON.parse(localStorage.getItem('events') ?? '[]');
-    events.push(this.event);
-    localStorage.setItem('events', JSON.stringify(events));
+  saveEvent() {
+    this.eventService.addEvent(this.event);
+
     this.event = {};
 
     this.saved.emit();

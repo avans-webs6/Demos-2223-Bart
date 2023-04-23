@@ -1,7 +1,7 @@
 <div>
     <ul>
         <li *ngFor="let event of events">
-            <app-event-details [event]="event"></app-event-details>
+            <a routerLink="../event/{{event.name}}" routerLinkActive="active">{{event.name}}</a>
         </li>
     </ul>
 </div>
