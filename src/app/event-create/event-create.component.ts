@@ -1,6 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EventService } from '../event.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-event-create',
@@ -9,21 +8,29 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class EventCreateComponent implements OnInit {
 
-  @Output()
-  saved = new EventEmitter();
-
   event: any = {};
+
+  createDialog: any;
 
   constructor(public eventService: EventService) { }
 
   ngOnInit(): void {
+    this.createDialog = document.getElementById("createDialog") as HTMLDialogElement;
   }
 
-  saveEvent() {
+  onCreate() {
+    this.createDialog.showModal();
+  }
+
+  onSave() {
     this.eventService.addEvent(this.event);
 
     this.event = {};
+    
+    this.createDialog.close();
+  }
 
-    this.saved.emit();
+  onCancel() {
+    this.createDialog.close();
   }
 }

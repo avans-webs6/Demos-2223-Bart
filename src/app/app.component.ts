@@ -9,18 +9,9 @@ import { EventService } from './event.service';
 export class AppComponent {
   title = 'Festivals';
 
-  showCreate = false;
-
   constructor(public eventService: EventService) { }
 
   onClear() {
     this.eventService.clrEvents();
-  }
-  onCreate() {
-    this.showCreate = !this.showCreate;
-  }
-
-  onSaved() {
-    this.showCreate = false;
   }
 }

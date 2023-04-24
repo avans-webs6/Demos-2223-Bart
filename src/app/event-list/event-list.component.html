@@ -1,6 +1,6 @@
 <div>
     <ul>
-        <li *ngFor="let event of events">
+        <li *ngFor="let event of events | async">
             <a routerLink="../event/{{event.name}}" routerLinkActive="active">{{event.name}}</a>
         </li>
     </ul>

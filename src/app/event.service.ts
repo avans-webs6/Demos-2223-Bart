@@ -6,13 +6,11 @@ import { Observable, Subscriber } from 'rxjs';
 })
 export class EventService {
 
-  subscriber: Subscriber<any> | undefined;
+  observable: Observable<any[]>;
+  subscriber!: Subscriber<any>;
   
   constructor() {
-   }
-
-   getEvents(): Observable<any[]> {
-    return new Observable((subscriber: Subscriber<any>) => {
+    this.observable = new Observable((subscriber: Subscriber<any[]>) => {
 
       this.subscriber = subscriber;
 
@@ -20,19 +18,22 @@ export class EventService {
     });
    }
 
+   getEvents(): Observable<any[]> {
+    return this.observable;
+   }
+
    addEvent(event: any) {
     let events: any[] = JSON.parse(localStorage.getItem('events') ?? '[]');
     events.push(event);
     localStorage.setItem('events', JSON.stringify(events));
 
-    this.subscriber?.next(events);
+    this.subscriber.next(events);
    }
 
    clrEvents() {
     let events: any[] = [];
-
     localStorage.setItem('events', JSON.stringify(events));
 
-    this.subscriber?.next(events);
+    this.subscriber.next(events);
    }
 }

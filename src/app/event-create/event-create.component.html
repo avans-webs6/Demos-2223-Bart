@@ -1,8 +1,14 @@
-<p></p>
-<table>
-    <tr><td>Name:</td><td><input [(ngModel)]="event.name"/></td></tr>
-    <tr><td>Location:</td><td><input [(ngModel)]="event.location"/></td></tr>
-    <tr><td>Date:</td><td><input [(ngModel)]="event.date"/></td></tr>
-    <tr><td><td><button (click)="saveEvent()">Save</button></td></tr>
-</table>
+<button (click)="onCreate()">Create event</button>
+<dialog id="createDialog">
+    <h3>Create event</h3>
+    <table>
+        <tr><td>Name:</td><td><input [(ngModel)]="event.name"/></td></tr>
+        <tr><td>Location:</td><td><input [(ngModel)]="event.location"/></td></tr>
+        <tr><td>Date:</td><td><input [(ngModel)]="event.date"/></td></tr>
+    </table>
+    <p></p>
+    <div>
+        <button style="float: left;" (click)="onCancel()">Cancel</button><button style="float: right;" (click)="onSave()">Save</button>
+    </div>
+</dialog>
 
