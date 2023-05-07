@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subscriber } from 'rxjs';
 import { initializeApp } from "firebase/app";
-import { Firestore , getFirestore, onSnapshot, collection, addDoc, deleteDoc, doc } from "firebase/firestore";
+import { Firestore , getFirestore, onSnapshot, collection, addDoc, deleteDoc, doc, getDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyATK7HrO9iF5q8eJ8VLJ_v_jeMhVMvcnd4",
@@ -38,6 +38,21 @@ export class EventService {
         subscriber.next(events);
       });
     });
+  }
+
+  getEvent(id: any): Observable<any> {
+    return new Observable((subscriber: Subscriber<any>) => {
+      getDoc(doc(this.firestore, "events", id)).then((doc) => {
+        let event = doc.data() ?? {};
+        event['id'] = doc.id;
+        subscriber.next(event);
+      });
+      //onSnapshot(doc(this.firestore, "events", id), (doc) => {
+        //let event = doc.data() ?? {};
+        //event['id'] = doc.id;
+        //subscriber.next(event);
+      //});
+    })
   }
 
   addEvent(event: any) {

@@ -9,12 +9,11 @@ import { EventService } from '../event.service';
 })
 export class EventDetailsComponent implements OnInit {
 
-  @Input()
   event: any;
   
   constructor(private service: EventService, private route: ActivatedRoute) {
-    service.getEvents().subscribe((events: any[]) => {
-      this.event = events.find((e: any) => e.name === this.route.snapshot.paramMap.get('name'));
+    service.getEvent(this.route.snapshot.paramMap.get('id')).subscribe((event: any) => {
+      this.event = event;
     });
    }
 
