@@ -1,7 +1,8 @@
 <div>
-    <ul>
-        <li *ngFor="let event of events | async">
-            <a routerLink="../event/{{event.name}}" routerLinkActive="active">{{event.name}}</a>
-        </li>
-    </ul>
+    <table>
+        <tr *ngFor="let event of events | async">
+            <td><a routerLink="../event/{{event.name}}" routerLinkActive="active">{{event.name}}</a></td><td><button (click)="onDelete(event)">Delete</button></td>
+        </tr>
+    </table>
+    <p></p>
 </div>

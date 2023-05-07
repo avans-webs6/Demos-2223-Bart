@@ -1,39 +1,50 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subscriber } from 'rxjs';
+import { initializeApp } from "firebase/app";
+import { Firestore , getFirestore, onSnapshot, collection, addDoc, deleteDoc, doc } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyATK7HrO9iF5q8eJ8VLJ_v_jeMhVMvcnd4",
+  authDomain: "adweb-demos.firebaseapp.com",
+  projectId: "adweb-demos",
+  storageBucket: "adweb-demos.appspot.com",
+  messagingSenderId: "922213293995",
+  appId: "1:922213293995:web:b3058c8215848a07093cee"
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
 
-  observable: Observable<any[]>;
-  subscriber!: Subscriber<any>;
-  
+  firestore: Firestore;
+
   constructor() {
-    this.observable = new Observable((subscriber: Subscriber<any[]>) => {
+    const app = initializeApp(firebaseConfig);
 
-      this.subscriber = subscriber;
+    this.firestore = getFirestore(app);
+  }
 
-      subscriber.next(JSON.parse(localStorage.getItem('events') ?? '[]'));
+  getEvents(): Observable<any[]> {
+    return new Observable((subscriber: Subscriber<any[]>) => {
+      onSnapshot(collection(this.firestore, 'events'), (snapshot) => {
+        let events: any[] = [];
+        snapshot.forEach((doc) => {
+          let event = doc.data();
+          event['id'] = doc.id;
+          events.push(event);
+          //events.push({ id: doc.id, name: doc.data()["name"], location: doc.data()["location"], date: doc.data()["date"] })
+        });
+        subscriber.next(events);
+      });
     });
-   }
+  }
 
-   getEvents(): Observable<any[]> {
-    return this.observable;
-   }
+  addEvent(event: any) {
+    addDoc(collection(this.firestore, "events"), event);
+  }
 
-   addEvent(event: any) {
-    let events: any[] = JSON.parse(localStorage.getItem('events') ?? '[]');
-    events.push(event);
-    localStorage.setItem('events', JSON.stringify(events));
-
-    this.subscriber.next(events);
-   }
-
-   clrEvents() {
-    let events: any[] = [];
-    localStorage.setItem('events', JSON.stringify(events));
-
-    this.subscriber.next(events);
-   }
+  deleteEvent(event: any) {
+    deleteDoc(doc(this.firestore, "events", event.id));
+  }
 }

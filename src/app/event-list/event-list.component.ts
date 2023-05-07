@@ -17,4 +17,8 @@ export class EventListComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  onDelete(event: any){
+    this.eventService.deleteEvent(event);
+  }
 }

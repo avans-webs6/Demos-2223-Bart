@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { EventService } from './event.service';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +8,5 @@ import { EventService } from './event.service';
 export class AppComponent {
   title = 'Festivals';
 
-  constructor(public eventService: EventService) { }
-
-  onClear() {
-    this.eventService.clrEvents();
-  }
+  constructor() { }
 }
