@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subscriber } from 'rxjs';
 import { initializeApp } from "firebase/app";
 import { Firestore , getFirestore, onSnapshot, collection, addDoc, deleteDoc, doc, getDoc } from "firebase/firestore";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyATK7HrO9iF5q8eJ8VLJ_v_jeMhVMvcnd4",
@@ -23,6 +24,12 @@ export class EventService {
     const app = initializeApp(firebaseConfig);
 
     this.firestore = getFirestore(app);
+
+    const auth = getAuth(app);
+
+    signInWithEmailAndPassword(auth, 'bfm.luijten@avans.nl', 'MijnGeheimeWachtwoord').then((response) => {
+      console.log(response);
+    });
   }
 
   getEvents(): Observable<any[]> {
@@ -33,7 +40,6 @@ export class EventService {
           let event = doc.data();
           event['id'] = doc.id;
           events.push(event);
-          //events.push({ id: doc.id, name: doc.data()["name"], location: doc.data()["location"], date: doc.data()["date"] })
         });
         subscriber.next(events);
       });
