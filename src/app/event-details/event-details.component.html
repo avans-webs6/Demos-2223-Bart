@@ -1,5 +1,9 @@
 <ul *ngIf="event">
-<h2>{{event.name}}</h2>
-<p></p>
-<h3>{{event.location}}, {{event.date}}</h3>
+    <form [formGroup]="eventForm">
+        <table>
+        <tr><td>Name:<td><input formControlName="name"></td></tr>
+        <tr><td>Location:<td><input formControlName="location"></td></tr>
+        <tr><td>Date:<td><input formControlName="date"></td></tr>
+        </table>
+    </form>
 </ul>
