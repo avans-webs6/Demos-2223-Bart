@@ -10,26 +10,20 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class EventDetailsComponent implements OnInit {
 
-  event: any;
-
-  eventForm: FormGroup = new FormGroup({});
+  eventForm: any;
   
   constructor(private service: EventService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
     let id = this.route.snapshot.paramMap.get('id');
 
     service.getEvent(id).subscribe((event: any) => {
-      this.event = event;
-
       this.eventForm = this.formBuilder.group(event);
 
       this.eventForm.valueChanges.subscribe(() => {
         this.service.updateEvent(id, this.eventForm.value)
-
       });
     });
    }
 
   ngOnInit(): void {
   }
-
 }
