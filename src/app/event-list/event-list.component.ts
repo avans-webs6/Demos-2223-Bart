@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 })
 export class EventListComponent implements OnInit {
 
+  term: string = '';
+
   events: Observable<any[]>;
 
   constructor(public eventService: EventService) {
@@ -20,5 +22,9 @@ export class EventListComponent implements OnInit {
 
   onDelete(event: any){
     this.eventService.deleteEvent(event);
+  }
+
+  onSearch(query: string) {
+    this.term = query;
   }
 }

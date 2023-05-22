@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subscriber } from 'rxjs';
 import { initializeApp } from "firebase/app";
-import { Firestore , getFirestore, onSnapshot, collection, addDoc, deleteDoc, doc, getDoc } from "firebase/firestore";
+import { Firestore , getFirestore, onSnapshot, collection, addDoc, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const firebaseConfig = {
@@ -67,5 +67,9 @@ export class EventService {
 
   deleteEvent(event: any) {
     deleteDoc(doc(this.firestore, "events", event.id));
+  }
+
+  updateEvent(id: any, event: any) {
+    updateDoc(doc(this.firestore, "events", id), event)
   }
 }
