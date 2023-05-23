@@ -48,16 +48,16 @@ export class EventService {
 
   getEvent(id: any): Observable<any> {
     return new Observable((subscriber: Subscriber<any>) => {
-      getDoc(doc(this.firestore, "events", id)).then((doc) => {
-        let event = doc.data() ?? {};
-        event['id'] = doc.id;
-        subscriber.next(event);
-      });
-      //onSnapshot(doc(this.firestore, "events", id), (doc) => {
+      //getDoc(doc(this.firestore, "events", id)).then((doc) => {
         //let event = doc.data() ?? {};
         //event['id'] = doc.id;
         //subscriber.next(event);
       //});
+      onSnapshot(doc(this.firestore, "events", id), (doc) => {
+        let event = doc.data() ?? {};
+        event['id'] = doc.id;
+        subscriber.next(event);
+      });
     })
   }
 
