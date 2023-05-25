@@ -52,10 +52,24 @@ export class EventService {
         let event = doc.data() ?? {};
         event['id'] = doc.id;
 
-
         subscriber.next(event);
       });
     })
+  }
+
+  getOrganiser(event: any): Observable<any> {
+    return new Observable((subscriber: Subscriber<any>) => {
+      onSnapshot(event.organiser, (doc: any) => {
+        event.organiser = doc.data() ? doc.data()["name"] : "Unknown";
+        subscriber.next(event);
+      });
+    });
+  }
+
+  getEventWithOrganiser(id: any): Observable<string> {
+    return this.getEvent(id).pipe(mergeMap((event) => {
+      return this.getOrganiser(event);
+    }));
   }
 
   addEvent(event: any) {
@@ -68,20 +82,6 @@ export class EventService {
 
   updateEvent(id: any, event: any) {
     updateDoc(doc(this.firestore, "events", id), event)
-  }  
-
-  unsubscribe: any;
-  
-  getOrganiser(organiser: any): Observable<string> {
-    return new Observable((subscriber: Subscriber<any>) => {
-      if (this.unsubscribe) {
-        this.unsubscribe();
-      }
-
-      this.unsubscribe = onSnapshot(organiser, (doc: any) => {
-        subscriber.next(doc.data()["name"]);
-      });
-    });
   }
 
   getEventOrganiser(id: any): Observable<string> {
