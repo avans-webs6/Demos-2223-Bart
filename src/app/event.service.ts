@@ -46,12 +46,9 @@ export class EventService {
     });
   }
 
-  eventUnsubscribe: any;
-
   getEvent(id: any): Observable<any> {
     return new Observable((subscriber: Subscriber<any>) => {
-      if (this.eventUnsubscribe) this.eventUnsubscribe();
-      this.eventUnsubscribe = onSnapshot(doc(this.firestore, "events", id), (doc) => {
+      onSnapshot(doc(this.firestore, "events", id), (doc) => {
         let event = doc.data() ?? {};
         event['id'] = doc.id;
 
@@ -60,19 +57,22 @@ export class EventService {
     })
   }
 
-  organiserUnsubscribe: any;
-
-  getOrganiser(event: any): Observable<any> {
+  getOrganiser(event: any): Observable<string> {
     return new Observable((subscriber: Subscriber<any>) => {
-      if (this.organiserUnsubscribe) this.organiserUnsubscribe();
       if (event.organiser) {
-        this.organiserUnsubscribe = onSnapshot(event.organiser, (doc: any) => {
+        onSnapshot(event.organiser, (doc: any) => {
           subscriber.next(doc.data() ? doc.data()["name"] : "Error");
         });
       } else {
         subscriber.next("Unknown");
       }
     });
+  }
+
+  getOrganiserFromEventId(id: any): Observable<string> {
+    return this.getEvent(id).pipe(mergeMap((event: any) => {
+      return this.getOrganiser(event);
+    }));
   }
 
   addEvent(event: any) {
