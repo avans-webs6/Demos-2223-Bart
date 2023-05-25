@@ -14,8 +14,6 @@ export class EventDetailsComponent implements OnInit {
   eventForm: any;
 
   organiser: any;
-
-  subscription: any;
   
   constructor(private service: EventService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
    }
@@ -26,9 +24,8 @@ export class EventDetailsComponent implements OnInit {
     this.service.getEvent(id).subscribe((event: any) => {
       this.eventForm = this.formBuilder.group(event);
 
-      if (this.subscription) this.subscription.unsubscribe();
-
-      this.subscription = this.service.getOrganiser(event).subscribe((organiser: any) => {
+      this.service.getOrganiser(event).subscribe((organiser: any) => {
+        console.log(organiser);
         this.organiser = organiser;
       });
 
@@ -36,9 +33,5 @@ export class EventDetailsComponent implements OnInit {
         this.service.updateEvent(id, this.eventForm.value)
       });
     });
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscription) this.subscription.unsubscribe();
   }
 }
