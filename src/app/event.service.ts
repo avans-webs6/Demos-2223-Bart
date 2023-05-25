@@ -46,9 +46,12 @@ export class EventService {
     });
   }
 
+  eventUnsubscribe: any;
+
   getEvent(id: any): Observable<any> {
     return new Observable((subscriber: Subscriber<any>) => {
-      onSnapshot(doc(this.firestore, "events", id), (doc) => {
+      if (this.eventUnsubscribe) this.eventUnsubscribe();
+      this.eventUnsubscribe = onSnapshot(doc(this.firestore, "events", id), (doc) => {
         let event = doc.data() ?? {};
         event['id'] = doc.id;
 
@@ -57,10 +60,13 @@ export class EventService {
     })
   }
 
+  organiserUnsubscribe: any;
+
   getOrganiser(event: any): Observable<any> {
     return new Observable((subscriber: Subscriber<any>) => {
+      if (this.organiserUnsubscribe) this.organiserUnsubscribe();
       if (event.organiser) {
-        onSnapshot(event.organiser, (doc: any) => {
+        this.organiserUnsubscribe = onSnapshot(event.organiser, (doc: any) => {
           subscriber.next(doc.data() ? doc.data()["name"] : "Error");
         });
       } else {
