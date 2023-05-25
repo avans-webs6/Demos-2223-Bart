@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscriber } from 'rxjs';
+import { Observable, Subscriber, mergeMap } from 'rxjs';
 import { initializeApp } from "firebase/app";
-import { Firestore , getFirestore, onSnapshot, collection, addDoc, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { Firestore , getFirestore, onSnapshot, collection, addDoc, deleteDoc, doc, getDoc, updateDoc, DocumentReference, Unsubscribe } from "firebase/firestore";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const firebaseConfig = {
@@ -48,14 +48,11 @@ export class EventService {
 
   getEvent(id: any): Observable<any> {
     return new Observable((subscriber: Subscriber<any>) => {
-      //getDoc(doc(this.firestore, "events", id)).then((doc) => {
-        //let event = doc.data() ?? {};
-        //event['id'] = doc.id;
-        //subscriber.next(event);
-      //});
       onSnapshot(doc(this.firestore, "events", id), (doc) => {
         let event = doc.data() ?? {};
         event['id'] = doc.id;
+
+
         subscriber.next(event);
       });
     })
@@ -71,5 +68,50 @@ export class EventService {
 
   updateEvent(id: any, event: any) {
     updateDoc(doc(this.firestore, "events", id), event)
+  }  
+
+  unsubscribe: any;
+  
+  getOrganiser(organiser: any): Observable<string> {
+    return new Observable((subscriber: Subscriber<any>) => {
+      if (this.unsubscribe) {
+        this.unsubscribe();
+      }
+
+      this.unsubscribe = onSnapshot(organiser, (doc: any) => {
+        let data = doc.data();
+
+        if (data) {
+          subscriber.next(data["name"]);
+          
+          console.log(data["name"]);
+        }
+      });
+    });
   }
+
+  getEventOrganiser(id: any): Observable<string> {
+    return this.getEvent(id).pipe(mergeMap((event) => {
+      return this.getOrganiser(event.organiser);
+    }));
+  }
+
+  getEventOrganiserAlternative(id: any): Observable<string> {
+    return new Observable((subscriber: Subscriber<any>) => {
+      this.getEvent(id).subscribe((event) => {
+        this.getOrganiser(event.organiser).subscribe((organiser) => {
+          subscriber.next(organiser);
+        })
+      })
+    });
+  }
+
+  //Down the Rabbit Hole: Mojo Concerts
+  //Best Kept Secret: Friendly Fire
+  //Lowlands: Mojo Concerts
+  //Pinkpop: Buro Pinkpop
+  //Into the Great Wide Open: Stichting Into the Great Wide Open
+  //North Sea Jazz: Mojo Concerts
+  //Mysteryland: ID&T
+  //Zwarte Cross: Feestfabriek Alles Komt Goed BV
 }

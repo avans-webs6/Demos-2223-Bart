@@ -12,6 +12,8 @@ import { debounceTime } from 'rxjs';
 export class EventDetailsComponent implements OnInit {
 
   eventForm: any;
+
+  organiser: any;
   
   constructor(private service: EventService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
     let id = this.route.snapshot.paramMap.get('id');
@@ -22,6 +24,10 @@ export class EventDetailsComponent implements OnInit {
       this.eventForm.valueChanges.pipe(debounceTime(500)).subscribe(() => {
         this.service.updateEvent(id, this.eventForm.value)
       });
+    });
+
+    service.getEventOrganiserAlternative(id).subscribe((organiser: any) => {
+      this.organiser = organiser;
     });
    }
 
