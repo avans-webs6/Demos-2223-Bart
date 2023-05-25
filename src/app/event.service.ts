@@ -79,13 +79,7 @@ export class EventService {
       }
 
       this.unsubscribe = onSnapshot(organiser, (doc: any) => {
-        let data = doc.data();
-
-        if (data) {
-          subscriber.next(data["name"]);
-          
-          console.log(data["name"]);
-        }
+        subscriber.next(doc.data()["name"]);
       });
     });
   }
