@@ -8,13 +8,17 @@ import { EventService } from '../event.service';
 })
 export class EventCreateComponent implements OnInit {
 
-  event: any = {};
+  event: any = { name: "", location: "", date: "", organiser: ""};
+
+  organisers: any;
 
   createDialog: any;
 
-  constructor(public eventService: EventService) { }
+  constructor(public service: EventService) { }
 
   ngOnInit(): void {
+    this.organisers = this.service.getOrganisations();
+
     this.createDialog = document.getElementById("createDialog") as HTMLDialogElement;
   }
 
@@ -23,9 +27,9 @@ export class EventCreateComponent implements OnInit {
   }
 
   onSave() {
-    this.eventService.addEvent(this.event);
+    this.service.addEvent(this.event);
 
-    this.event = {};
+    this.event = { name: "", location: "", date: "", organiser: ""};
     
     this.createDialog.close();
   }

@@ -13,14 +13,14 @@ export class EventDetailsComponent implements OnInit, OnDestroy {
 
   eventForm: any;
 
-  organiser: any;
-
-  subscription: any;
+  organisers: any;
   
   constructor(private service: EventService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
    }
 
   ngOnInit(): void {
+    this.organisers = this.service.getOrganisations();
+
     let id = this.route.snapshot.paramMap.get('id');
 
     this.service.getEvent(id).subscribe((event: any) => {
@@ -30,16 +30,8 @@ export class EventDetailsComponent implements OnInit, OnDestroy {
         this.service.updateEvent(id, this.eventForm.value)
       });
     });
-
-    if (this.subscription) this.subscription.unsubscribe();
-
-    this.subscription = this.service.getOrganiserFromEventId(id).subscribe((organiser: any) => {
-      console.log(organiser);
-      this.organiser = organiser;
-    });
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) this.subscription.unsubscribe();
   }
 }

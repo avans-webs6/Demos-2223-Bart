@@ -5,6 +5,11 @@
         <tr><td>Name:</td><td><input [(ngModel)]="event.name"/></td></tr>
         <tr><td>Location:</td><td><input [(ngModel)]="event.location"/></td></tr>
         <tr><td>Date:</td><td><input [(ngModel)]="event.date"/></td></tr>
+        <tr><td>Organiser:</td>
+            <td><select [(ngModel)]="event.organiser">
+                <option *ngFor="let organiser of organisers | async" [value]="organiser.id">{{organiser.name}}</option>
+            </select></td>
+        </tr>
     </table>
     <p></p>
     <div>

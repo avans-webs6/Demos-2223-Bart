@@ -46,6 +46,20 @@ export class EventService {
     });
   }
 
+  getOrganisations(): Observable<any[]> {
+    return new Observable((subscriber: Subscriber<any[]>) => {
+      onSnapshot(collection(this.firestore, 'organisers'), (snapshot) => {
+        let organisations: any[] = [];
+        snapshot.forEach((doc) => {
+          let organisation = doc.data();
+          organisation['id'] = doc.id;
+          organisations.push(organisation);
+        });
+        subscriber.next(organisations);
+      });
+    });
+  }
+
   getEvent(id: any): Observable<any> {
     return new Observable((subscriber: Subscriber<any>) => {
       onSnapshot(doc(this.firestore, "events", id), (doc) => {
@@ -60,7 +74,7 @@ export class EventService {
   getOrganiser(event: any): Observable<string> {
     return new Observable((subscriber: Subscriber<any>) => {
       if (event.organiser) {
-        onSnapshot(event.organiser, (doc: any) => {
+        onSnapshot(doc(this.firestore, "organisers", event.organiser), (doc: any) => {
           subscriber.next(doc.data() ? doc.data()["name"] : "Error");
         });
       } else {

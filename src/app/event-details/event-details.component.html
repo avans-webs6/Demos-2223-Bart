@@ -3,7 +3,10 @@
     <tr><td>Name:<td><input formControlName="name"></td></tr>
     <tr><td>Location:<td><input formControlName="location"></td></tr>
     <tr><td>Date:<td><input formControlName="date"></td></tr>
+    <tr><td>Organiser:</td>
+        <td><select formControlName="organiser">
+            <option *ngFor="let organiser of organisers | async" [value]="organiser.id">{{organiser.name}}</option>
+        </select></td>
+    </tr>
     </table>
-    <p></p>
-    <label>Organiser: </label>{{organiser}}
 </form>
