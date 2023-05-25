@@ -59,17 +59,14 @@ export class EventService {
 
   getOrganiser(event: any): Observable<any> {
     return new Observable((subscriber: Subscriber<any>) => {
-      onSnapshot(event.organiser, (doc: any) => {
-        event.organiser = doc.data() ? doc.data()["name"] : "Unknown";
-        subscriber.next(event);
-      });
+      if (event.organiser) {
+        onSnapshot(event.organiser, (doc: any) => {
+          subscriber.next(doc.data() ? doc.data()["name"] : "Error");
+        });
+      } else {
+        subscriber.next("Unknown");
+      }
     });
-  }
-
-  getEventWithOrganiser(id: any): Observable<string> {
-    return this.getEvent(id).pipe(mergeMap((event) => {
-      return this.getOrganiser(event);
-    }));
   }
 
   addEvent(event: any) {
@@ -82,22 +79,6 @@ export class EventService {
 
   updateEvent(id: any, event: any) {
     updateDoc(doc(this.firestore, "events", id), event)
-  }
-
-  getEventOrganiser(id: any): Observable<string> {
-    return this.getEvent(id).pipe(mergeMap((event) => {
-      return this.getOrganiser(event.organiser);
-    }));
-  }
-
-  getEventOrganiserAlternative(id: any): Observable<string> {
-    return new Observable((subscriber: Subscriber<any>) => {
-      this.getEvent(id).subscribe((event) => {
-        this.getOrganiser(event.organiser).subscribe((organiser) => {
-          subscriber.next(organiser);
-        })
-      })
-    });
   }
 
   //Down the Rabbit Hole: Mojo Concerts
