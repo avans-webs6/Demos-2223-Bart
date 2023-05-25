@@ -8,3 +8,11 @@
     </table>
     <p></p>
 </div>
+<dialog id="deleteDialog">
+    <h3>Delete event?</h3>
+    <div *ngIf="event">Are you sure to delete this event?<p></p>{{event.name}}</div>
+    <p></p>
+    <div>
+        <button style="float: left;" (click)="onCancel()">Cancel</button><button style="float: right;" (click)="onConfirm()">Delete</button>
+    </div>
+</dialog>

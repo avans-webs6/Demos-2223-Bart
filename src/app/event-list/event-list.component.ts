@@ -11,20 +11,37 @@ export class EventListComponent implements OnInit {
 
   term: string = '';
 
+  event: any;
+
   events: Observable<any[]>;
+
+  deleteDialog: any;
 
   constructor(public eventService: EventService) {
     this.events = eventService.getEvents();
   }
 
   ngOnInit(): void {
+    this.deleteDialog = document.getElementById("deleteDialog") as HTMLDialogElement;
   }
 
   onDelete(event: any){
-    this.eventService.deleteEvent(event);
+    this.event = event;
+
+    this.deleteDialog.showModal();
   }
 
   onSearch(query: string) {
     this.term = query;
+  }
+
+  onCancel() {
+    this.deleteDialog.close();
+  }
+
+  onConfirm() {
+    this.eventService.deleteEvent(this.event);
+    
+    this.deleteDialog.close();
   }
 }
