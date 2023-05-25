@@ -17,7 +17,7 @@ export class EventCreateComponent implements OnInit {
   constructor(public service: EventService) { }
 
   ngOnInit(): void {
-    this.organisers = this.service.getOrganisations();
+    this.organisers = this.service.getOrganisers();
 
     this.createDialog = document.getElementById("createDialog") as HTMLDialogElement;
   }

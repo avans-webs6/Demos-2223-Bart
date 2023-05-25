@@ -46,7 +46,7 @@ export class EventService {
     });
   }
 
-  getOrganisations(): Observable<any[]> {
+  getOrganisers(): Observable<any[]> {
     return new Observable((subscriber: Subscriber<any[]>) => {
       onSnapshot(collection(this.firestore, 'organisers'), (snapshot) => {
         let organisations: any[] = [];

@@ -19,7 +19,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
-    this.organisers = this.service.getOrganisations();
+    this.organisers = this.service.getOrganisers();
 
     let id = this.route.snapshot.paramMap.get('id');
 
