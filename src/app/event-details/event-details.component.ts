@@ -15,8 +15,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy {
 
   organisers: any;
   
-  constructor(private service: EventService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
-   }
+  constructor(private service: EventService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.organisers = this.service.getOrganisers();
