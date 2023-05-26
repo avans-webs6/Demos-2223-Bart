@@ -14,6 +14,8 @@ export class EventDetailsComponent implements OnInit, OnDestroy {
   eventForm: any;
 
   organisers: any;
+
+  participants: any;
   
   constructor(private service: EventService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
 
@@ -22,7 +24,11 @@ export class EventDetailsComponent implements OnInit, OnDestroy {
 
     let id = this.route.snapshot.paramMap.get('id');
 
+    this.participants = this.service.getParticipantsFromEventId(id);
+
     this.service.getEvent(id).subscribe((event: any) => {
+      event.participants = [event.participants];
+
       this.eventForm = this.formBuilder.group(event);
 
       this.eventForm.valueChanges.pipe(debounceTime(500)).subscribe(() => {

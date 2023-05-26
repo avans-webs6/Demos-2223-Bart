@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscriber, mergeMap } from 'rxjs';
+import { Observable, Subscriber, combineLatest, mergeMap } from 'rxjs';
 import { initializeApp } from "firebase/app";
 import { Firestore , getFirestore, onSnapshot, collection, addDoc, deleteDoc, doc, getDoc, updateDoc, DocumentReference, Unsubscribe } from "firebase/firestore";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -83,9 +83,31 @@ export class EventService {
     });
   }
 
+  getParticipant(id: any): Observable<string> {
+    return new Observable((subscriber: Subscriber<any>) => {
+      onSnapshot(doc(this.firestore, "participants", id), (doc: any) => {
+        subscriber.next(doc.data() ? doc.data()["name"] : "Error");
+      });
+    });
+  }
+
   getOrganiserFromEventId(id: any): Observable<string> {
     return this.getEvent(id).pipe(mergeMap((event: any) => {
       return this.getOrganiser(event);
+    }));
+  }
+
+  getParticipantsFromEventId(id: any): Observable<any[]> {
+    return this.getEvent(id).pipe(mergeMap((event: any) => {
+      let participants: Observable<any>[] = [];
+
+      if (event.participants) {
+        event.participants.forEach((participant: any) => {
+          participants.push(this.getParticipant(participant));
+        });
+      }
+
+      return combineLatest(participants);
     }));
   }
 

@@ -8,5 +8,6 @@
             <option *ngFor="let organiser of organisers | async" [value]="organiser.id">{{organiser.name}}</option>
         </select></td>
     </tr>
+    <tr><td>Participants: </td><td><span *ngFor="let participant of participants | async">{{participant}} </span></td></tr>
     </table>
 </form>
