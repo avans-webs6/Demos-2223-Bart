@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscriber, combineLatest, map, mergeMap } from 'rxjs';
+import { Observable, Subscriber, combineLatest, map, mergeMap, of } from 'rxjs';
 import { initializeApp } from "firebase/app";
 import { Firestore , getFirestore, onSnapshot, collection, addDoc, deleteDoc, doc, getDoc, updateDoc, DocumentReference, Unsubscribe } from "firebase/firestore";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -109,13 +109,15 @@ export class EventService {
 
   getParticipantsFromEventId(id: any): Observable<any[]> {
     return this.getEvent(id).pipe(mergeMap((event: any) => {
-      let participants: Observable<any>[] = [];
-
-      if (event.participants) {
-        event.participants.forEach((participant: any) => {
-          participants.push(this.getParticipant(participant));
-        });
+      if (event.participants == null || event.participants.length == 0) {
+        return of([]);
       }
+
+      let participants: Observable<any>[] = [];
+      
+      event.participants.forEach((participant: any) => {
+        participants.push(this.getParticipant(participant));
+      });
 
       return combineLatest(participants);
     }));
