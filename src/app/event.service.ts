@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscriber, combineLatest, mergeMap } from 'rxjs';
+import { Observable, Subscriber, combineLatest, map, mergeMap } from 'rxjs';
 import { initializeApp } from "firebase/app";
 import { Firestore , getFirestore, onSnapshot, collection, addDoc, deleteDoc, doc, getDoc, updateDoc, DocumentReference, Unsubscribe } from "firebase/firestore";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -44,6 +44,16 @@ export class EventService {
         subscriber.next(events);
       });
     });
+  }
+
+  getEventsUpperCase(): Observable<any[]> {
+    return this.getEvents().pipe(map((events) => {
+      events.forEach((event) => {
+        let name = event.name;
+        event.name = name.toUpperCase();
+      });
+      return events;
+    }))
   }
 
   getOrganisers(): Observable<any[]> {
