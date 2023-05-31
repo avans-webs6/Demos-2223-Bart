@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EventListComponent } from './event-list.component';
+import { SearchEventPipe } from '../search-event.pipe';
 
 describe('EventListComponent', () => {
   let component: EventListComponent;
@@ -8,7 +9,7 @@ describe('EventListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EventListComponent ]
+      declarations: [ EventListComponent, SearchEventPipe ]
     })
     .compileComponents();
   });

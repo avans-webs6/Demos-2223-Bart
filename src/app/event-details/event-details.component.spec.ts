@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EventDetailsComponent } from './event-details.component';
+import { ActivatedRoute } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
 
 describe('EventDetailsComponent', () => {
   let component: EventDetailsComponent;
@@ -8,7 +10,11 @@ describe('EventDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EventDetailsComponent ]
+      declarations: [ EventDetailsComponent ],
+      providers: [ 
+        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: () => 1 } } } },
+        { provide: FormBuilder, useValue: {} }
+      ]
     })
     .compileComponents();
   });

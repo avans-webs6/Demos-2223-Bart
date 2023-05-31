@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EventCreateComponent } from './event-create.component';
+import { EventService } from '../event.service';
 
 describe('EventCreateComponent', () => {
   let component: EventCreateComponent;
@@ -21,5 +22,15 @@ describe('EventCreateComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call addEvent', () => {
+    let eventService = TestBed.inject(EventService);
+
+    let addEventSpy = spyOn(eventService, 'addEvent');
+
+    component.onSave();
+
+    expect(addEventSpy).toHaveBeenCalled();
   });
 });
