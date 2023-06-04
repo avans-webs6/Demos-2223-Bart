@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EventService } from '../event.service';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 
 @Component({
@@ -17,7 +17,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy {
 
   participants: any;
   
-  constructor(private service: EventService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
+  constructor(private service: EventService, private route: ActivatedRoute, private formBuilder: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.organisers = this.service.getOrganisers();
