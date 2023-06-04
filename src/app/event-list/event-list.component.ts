@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EventService } from '../event.service';
 import { Observable } from 'rxjs';
+import { DragulaService } from 'ng2-dragula';
 
 @Component({
   selector: 'app-event-list',
@@ -17,8 +18,18 @@ export class EventListComponent implements OnInit {
 
   deleteDialog: any;
 
-  constructor(public eventService: EventService) {
+  constructor(public eventService: EventService, public dragulaService: DragulaService) {
     this.events = eventService.getEvents();
+
+    dragulaService.drag().subscribe((value) => {
+      console.log("drag")
+      console.log(value)
+    });
+
+    dragulaService.drop().subscribe((value) => {
+      console.log("drop")
+      console.log(value)
+    });
   }
 
   ngOnInit(): void {

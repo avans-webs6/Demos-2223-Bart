@@ -1,7 +1,7 @@
 <app-event-search (search)="onSearch($event)"></app-event-search>
 <p></p>
 <div>
-    <table>
+    <table [dragula]="'EVENTS'">
         <tr *ngFor="let event of events | async | searchEvent:term">
             <td><a routerLink="../event/{{event.id}}" routerLinkActive="active">{{event.name}}</a></td><td><button (click)="onDelete(event)">Delete</button></td>
         </tr>
