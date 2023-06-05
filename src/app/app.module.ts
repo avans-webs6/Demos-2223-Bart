@@ -11,6 +11,7 @@ import { EventService } from './event.service';
 import { AppRoutingModule } from './app-routing.module';
 import { SearchEventPipe } from './search-event.pipe';
 import { EventSearchComponent } from './event-search/event-search.component';
+import { BarChartComponent } from './bar-chart/bar-chart.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { EventSearchComponent } from './event-search/event-search.component';
     EventCreateComponent,
     EventDetailsComponent,
     SearchEventPipe,
-    EventSearchComponent
+    EventSearchComponent,
+    BarChartComponent
   ],
   imports: [
     BrowserModule,
